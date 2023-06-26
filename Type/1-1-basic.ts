@@ -16,17 +16,18 @@
 	//Object: function, array... (원시보다는 복잡한 데이터를 담는다.)
 
 	//    number
-	const num: number = 1
+	let num: number = 10
+	num = 133
 
 	//string
-	const str: string = 'helli'
+	const str: string = 'Strtest'
 
 	//boolean
 	const boal: boolean = false
 
 	//undefined (값이 있는지 없는지 결정 ❌)
-	let name1: undefined //💩
-	let numer1: number | undefined
+	let name1: undefined //좋지않다.
+	let numer1: number | undefined //이렇게 쓰는 경우가 더 많다.
 	numer1 = undefined
 	numer1 = 1
 
