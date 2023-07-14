@@ -1,4 +1,5 @@
 {
+	//서로 관련있는 친구들을 캡슐화
 	type CoffeeCup = {
 		shots: number
 		hasMilk: boolean

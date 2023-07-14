@@ -48,27 +48,27 @@
 
 	//any (이것도💩이다. 이것도 아무거나 들어갈수있는거다.)
 	let anything: any = 0
-	anything = 'hedsa'
+	anything = 'my name~~'
 
 	//unknown과 any는 진짜 쓰지말아보자
 
 	//void (아무 값도 리턴하지 않는 놈한테, 비어있는 느낌)
 	//보통은 함수에서 무언가를 리턴할때 주는게 좋지만, void는 리턴이 가능하다.
 	//하지만 변수에 선언해서 쓰는 경우는 undefined만 선언이 가능하기 때문에 선언 하지말자
-	function print(): void {
-		console.log('hello')
+	function printFn(): void {
+		console.log('hi~')
 	}
 
 	//never
 	//throwError는 어플리케이션에서 예상하지 못한 에러가 발생했을때 쓰는 함수
 	//never는 절대 절대 리턴할수 없다.
-	function throwError(message: string): never {
-		//message -> server(log)
-		// throw new Error(message)
-		while (true) {}
+	function error(message: string): never {
+		throw new Error(message)
 	}
 
 	//object (즉 원시타입을 제외한 추상적인 배열, 객체 다 가능함 즉,💩이다)
-	let obj: object
-	function acceptSomeObject(obj: object) {}
+	let object: object = {}
+	let object1: object = []
+
+	function Exobj(object: object) {}
 }

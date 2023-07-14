@@ -28,23 +28,27 @@
 	Math.abs 이것은 우리가 바로 쓸수있는것은 class level이여서 오브젝트를 생성하지않고 바로 쓸수있는것이다.
 	*/
 	class CoffeeMaker {
-		static BEANS_GRAMM_PER_SHOT: number = 7 //class levet로 지정
+		BEANS_GRAMM_PER_SHOT: number = 7 //class levet로 지정
 		coffeeBeans: number = 0 //instance (object) level
+		name: string = '박선영'
 
-		constructor(coffeeBeans: number) {
+		constructor(coffeeBeans: number, name: string) {
 			this.coffeeBeans = coffeeBeans
+			this.name = name
 		}
+
 		makeCoffee(shots: number): CoffeeCup {
-			if (this.coffeeBeans < shots * CoffeeMaker.BEANS_GRAMM_PER_SHOT) {
+			if (this.coffeeBeans < shots * this.BEANS_GRAMM_PER_SHOT) {
 				throw new Error('Not enough coffee beans!')
 			}
-			this.coffeeBeans -= shots * CoffeeMaker.BEANS_GRAMM_PER_SHOT
+			this.coffeeBeans -= shots * this.BEANS_GRAMM_PER_SHOT
 			return {
 				shots,
 				hasMilk: false,
 			}
 		}
 	}
-	const maker = new CoffeeMaker(32)
+
+	const maker = new CoffeeMaker(32, '김태기')
 	console.log(maker)
 }

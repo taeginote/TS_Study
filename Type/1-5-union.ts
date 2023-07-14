@@ -1,7 +1,9 @@
 {
 	//Union Types: OR
-	type Direction = 'left' | 'right' | 'up' | 'down'
-	function move(direction: Direction) {
+	type Way = 'left' | 'right' | 'up' | 'down'
+
+	type kind = 'book'|'car'
+	function move(direction: Way) {
 		console.log(direction)
 	}
 	move('down')
