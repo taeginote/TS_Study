@@ -1,0 +1,164 @@
+React.FC
+
+FC란?
+FunctionComponent 타입의 줄임말
+
+리액트 18 이전 까지는 FC가 가지고있는 것들이 좀 있었다.
+ - children이 옵셔널로 들어가있었다. (즉, 암시적으로 가지고 있는것이다.)
+ - defaultProps
+ React.FC는 defaultProps 를 이해하지 못한다. 
+ 예를 들면 Button 모듈화는 defaultProps를 가지고있었다. 그런것들을 이해하지 못하는 것이다.
+
+하지만 리액트 18 이후부터는 
+ - defaultProps를 정상적으로 사용할 수 있게 되었습니다.
+ - children을 명시적으로 타입 지정하여 사용할 수 있습니다.
+
+------------------------------------------------------------------------------
+ReactNode는 타입중 하나임
+사실 children을 사용하는 대표적인 type
+React.ReactNode는 JSX 반환한다.
+ReactNode는 ReactElement의 superset입니다. 리액트노드는 ReactElement일수도 있고, ReactFragment, string, number, ReactNode의 
+Array, null, undefined, boolean 등의 좀더 유연한 타입 정의라고 할 수 있습니다.
+대표적으로 프로젝트에도 적용을했는데, 버튼 컴포넌트에 사용 가능
+
+interface ButtonProps {
+	variant?: 'default-white' | 'default-reverse' | 'default'
+	shape?: 'default' | 'round'
+	size?: 'normal' | 'big' | 'default'
+	fontSize?: 'default'
+	type?: 'submit' | 'button'
+	disabled?: boolean
+	children?: React.ReactNode
+	onClick?: any //보류
+}
+
+
+function Button(props: ButtonProps) {
+	const {
+		variant = 'default',
+		shape = 'default',
+		size = 'default',
+		fontSize = 'default',
+		children,
+		...rest
+	} = props
+}
+이렇게 적용 가능하다
+------------------------------------------------------------------------------
+
+ReactElement는 
+
+interface ReactElement<P = any, T extends string | JSXElementConstructor<any> = string | JSXElementConstructor<any>> { type: T; props: P; key: Key | null; }
+React.createElement를 호출하면 이런 타입의 객체가 리턴 된다. 단순하게 리액트 컴포넌트 JSON 형태로 표현해놨다고 생각하면 됩니다.
+ReactElement는 type과 props를 가진 객체입니다.
+
+import React from 'react';
+
+interface Props {
+  name: string;
+}
+
+const GreetingComponent: React.FC<Props> = ({ name }) => {
+  return <h1>Hello, {name}!</h1>;
+};
+
+const element: React.ReactElement = <GreetingComponent name="John" />;
+
+export default element;
+------------------------------------------------------------------------------
+
+PropsWithChildren은 children을 받는 속성의 타입이다.
+이것도 children을 받는건인가?
+그렇다 그러면 ReactNode도 children을 받고 PropsWithChildren도 children을 받는데
+뭐를 쓰냐
+일단 둘의 차이점을 예시로 들겠다.
+
+import React, { PropsWithChildren, ReactNode } from 'react';
+
+// PropsWithChildren를 사용하여 children 속성 추가
+interface ParentComponentPropsWithChildren extends PropsWithChildren<{}> {
+  title: string;
+}
+
+// ReactNode를 사용하여 children 속성 추가
+interface ParentComponentReactNode {
+  title: string;
+  children: ReactNode;
+}
+
+// 두 가지 방법으로 구현된 ParentComponent
+const ParentComponentWithChildren: React.FC<ParentComponentPropsWithChildren> = ({ title, children }) => {
+  return (
+    <div>
+      <h2>{title}</h2>
+      {children}
+    </div>
+  );
+};
+
+const ParentComponentWithReactNode: React.FC<ParentComponentReactNode> = ({ title, children }) => {
+  return (
+    <div>
+      <h2>{title}</h2>
+      {children}
+    </div>
+  );
+};
+
+// 두 가지 사용법은 동일한 결과를 나타냅니다.
+const App: React.FC = () => {
+  return (
+    <div>
+      <ParentComponentWithChildren title="Parent Component with PropsWithChildren">
+        <p>Child Component 1</p>
+        <p>Child Component 2</p>
+      </ParentComponentWithChildren>
+      <ParentComponentWithReactNode title="Parent Component with ReactNode">
+        <p>Child Component 1</p>
+        <p>Child Component 2</p>
+      </ParentComponentWithReactNode>
+    </div>
+  );
+};
+
+export default App;
+
+같은 동작이지만 
+PropsWithChildren은?
+PropsWithChildren을 사용하면 children 속석을 따로 적지 않아도 가능하다. 즉 코드가 간경해준디ㅏ. 
+하지만 PropsWithChildren은 children 속성만을 포함하니깐 추가적인 인터페이스를 만들어 extends하는 형식이여야한다.
+
+ReactNode를 사용하면 타입 검사를 더 강력하게 할수있다는 점이다. 자식 요소의 대한 명시적으로 지정할수있으므로 그런것이다.
+또한, 특정 종류의 자식 요소만 받고록 타입을 제한할 수 있습니다. 
+단점은 children 속성에 해당하는 타입 정의를 따로 작성해야 합니다.
+코드를 간결하게 하려면 PropsWithChildren을 사용하는것이 맞다고 생각을 한다. 
+------------------------------------------------------------------------------
+
+RefObject
+
+'ref' 속성의 타입 안정성을 제공하기 위해 사용되는 특별한 타입입니다. RefObject는 React 컴포넌트의 ref 속성에 대한 타입을 제공하여 ref를 사용하는 과정에서 
+타입검사를 보다 강력하게 할 수 있게 해줍니다.
+또한 Dom요소나 React컴포넌트에 대한 참조를 유지하고 필요할때 직접 상호작용할수있습니다. 
+
+------------------------------------------------------------------------------
+
+useState 타입
+const [test, setTest]=useState(false)
+이런 예시가 있다고 치자
+사실 이건 간단하다 useState 초기값이 false가 들어있으니 이건 boolean타입이 들어온다느것이 알수있다
+const [test, setTest]=useState<boolean>(false)
+이런식으로 진행할수있다. state가 객체를 쓴다고 해도 저런식으로 가능하다.
+
+하지만 state같은경우 props를 넘기는 경우가 많다. 이것에 대한 타입은
+
+SetStateAction
+이건 프로젝트를 진행하면서도 많이 볼수있는 타입이다.
+setState props로 넘길때 타입을 지정해줘야한다.
+
+Dispatch<SetStateAction<boolean>>
+
+Dispatch와 SetStateAction를 사용하여 setState의 타입을 지정해주는것이다.
+
+결론 React.Dispatch<React.SetStateAction<state의 타입>>; 이렇게 가능하다.
+------------------------------------------------------------------------------
+
