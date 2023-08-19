@@ -1,6 +1,0 @@
-💡bigint란💡
-number와 BigInt는 어떤 면에서 비슷하지만 중요한 차이점이있다 
-BigInt는 내장 Math객체의 메서드와 함께 사용할수 없고, 연산에서 Number와 혼합해 사용할수없다는 점이다.
-BigInt는 Typeof 결과 bigint 타입이다. 주의하자
-BigInt는 Number가 나타낼수있는 최댓값보다 큰 정수를 표현할수있는 내장 객체
-Number로 표현했을때 infinity가 되는 아주 큰 값도 BigInt로 정수 형태를 잃지 않고 표현할수있다.
